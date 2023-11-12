@@ -1,0 +1,9 @@
+# Arquivos do IntelliJ IDEA
+.idea/
+
+# Arquivos de compilação
+target/
+build/
+
+# Arquivo ZIP do Spring Initializr
+*.zip
