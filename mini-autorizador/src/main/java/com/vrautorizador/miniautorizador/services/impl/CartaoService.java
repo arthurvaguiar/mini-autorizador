@@ -1,6 +1,7 @@
 package com.vrautorizador.miniautorizador.services.impl;
 
 import com.vrautorizador.miniautorizador.models.Cartao;
+import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
 import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.repositories.CartaoRepository;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
@@ -29,7 +30,7 @@ public class CartaoService implements ICartaoService {
 
 
     @Override
-    public ResponseEntity<?> criarOuRetornarExistente(CartaoRequestDto cartaoRequest) {
+    public ResponseEntity<?> criarOuRetornarExistente(CartaoDto cartaoRequest) {
         Cartao novoCartao = factory.criarCartao(cartaoRequest.getNumeroCartao(), cartaoRequest.getSenha());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(novoCartao));
     }
