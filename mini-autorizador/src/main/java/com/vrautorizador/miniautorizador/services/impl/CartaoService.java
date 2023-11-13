@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Optional;
+
 @Service
 @Validated
 public class CartaoService implements ICartaoService {
@@ -34,4 +36,11 @@ public class CartaoService implements ICartaoService {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(novoCartao));
     }
 
+    @Override
+    public ResponseEntity<?> obterSaldoDoCartao(String numeroCartao) {
+        return Optional.ofNullable(repository.findByNumeroCartao(numeroCartao))
+                .map(cartao -> {
+                    return ResponseEntity.status(HttpStatus.OK).body(cartao.getValor());
+                }).orElse(ResponseEntity.notFound().build());
+    }
 }

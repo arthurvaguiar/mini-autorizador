@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface CartaoRepository extends JpaRepository<Cartao, Long> {
     boolean existsByNumeroCartao(String numeroCartao);
 
+    Cartao findByNumeroCartao(String numeroCartao);
+
 }

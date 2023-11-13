@@ -4,10 +4,7 @@ import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,9 +19,14 @@ public class CartaoController {
         this.cartaoService = cartaoService;
     }
 
-    @PostMapping("/cartoes")
+    @PostMapping()
     public ResponseEntity<?> criarNovoCartao(@RequestBody @Valid CartaoRequestDto cartao){
         return cartaoService.criarOuRetornarExistente(cartao);
+    }
+
+    @GetMapping("/{numeroCartao}")
+    public ResponseEntity<?> obterSaldoDoCartao(@RequestParam @Valid String numeroCartao){
+        return cartaoService.obterSaldoDoCartao(numeroCartao);
     }
 
 }

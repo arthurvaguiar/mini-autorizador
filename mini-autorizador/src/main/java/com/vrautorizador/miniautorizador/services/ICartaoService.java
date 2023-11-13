@@ -9,4 +9,5 @@ public interface ICartaoService {
 
     ResponseEntity<?> criarOuRetornarExistente(CartaoRequestDto cartaoRequest);
 
+    ResponseEntity<?> obterSaldoDoCartao(String numeroCartao);
 }

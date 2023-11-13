@@ -21,6 +21,10 @@ public class Cartao {
         this.senha = senha;
     }
 
+    public Cartao() {
+
+    }
+
     public Long getId() {
         return id;
     }
