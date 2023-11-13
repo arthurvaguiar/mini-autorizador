@@ -6,6 +6,7 @@ public class CartaoRequestDto {
     @CartaoValido
     private String numeroCartao;
     private String senha;
+    private double valor;
 
     public String getNumeroCartao() {
         return numeroCartao;
@@ -21,5 +22,13 @@ public class CartaoRequestDto {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 }

@@ -19,7 +19,7 @@ public class CartaoController {
         this.cartaoService = cartaoService;
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> criarNovoCartao(@RequestBody @Valid CartaoRequestDto cartao){
         return cartaoService.criarOuRetornarExistente(cartao);
     }
@@ -28,5 +28,7 @@ public class CartaoController {
     public ResponseEntity<?> obterSaldoDoCartao(@RequestParam @Valid String numeroCartao){
         return cartaoService.obterSaldoDoCartao(numeroCartao);
     }
+
+
 
 }

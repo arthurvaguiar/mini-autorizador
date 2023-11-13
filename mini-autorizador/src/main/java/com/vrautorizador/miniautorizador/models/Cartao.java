@@ -25,6 +25,12 @@ public class Cartao {
 
     }
 
+    public Cartao(String numeroCartao, String senha, double valor) {
+        this.numeroCartao = numeroCartao;
+        this.senha = senha;
+        this.valor = valor;
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,4 +62,6 @@ public class Cartao {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+
 }
