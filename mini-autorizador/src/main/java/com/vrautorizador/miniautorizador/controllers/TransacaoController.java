@@ -1,11 +1,15 @@
 package com.vrautorizador.miniautorizador.controllers;
 
-import com.vrautorizador.miniautorizador.models.Cartao;
+import com.vrautorizador.miniautorizador.exceptions.CartaoInexistenteException;
+import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
+import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
+import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
 import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.services.ITransacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +34,19 @@ public class TransacaoController {
 
     @Operation(summary = "Realizar transação", description = "Realizar transação", tags = {"Transações"})
     @PostMapping
-    public ResponseEntity<Cartao> realizarTransacao(@RequestBody CartaoRequestDto cartaoRequest) {
-        return transacaoService.realizarTransacao(cartaoRequest);
+    public ResponseEntity<Object> realizarTransacao(@RequestBody CartaoRequestDto cartaoRequest) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException, CartaoInexistenteException {
+        try {
+            this.transacaoService.realizarTransacao(cartaoRequest);
+            return ResponseEntity.status(HttpStatus.OK).body("Transação realizada com sucesso");
+
+        } catch (SenhaInvalidaException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("SENHA_INVALIDA");
+        } catch (SaldoInfucienteException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("SALD0_INSUFICIENTE");
+        } catch (CartaoInvalidoException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("CARTAO_INVALIDO");
+        } catch (CartaoInexistenteException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("CARTAO_INEXISTENTE");
+        }
     }
 }

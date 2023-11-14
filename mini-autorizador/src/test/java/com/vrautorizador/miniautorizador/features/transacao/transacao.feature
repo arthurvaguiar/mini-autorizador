@@ -8,8 +8,7 @@ Funcionalidade: Realizar uma transação de cartão.
 
   Esquema do Cenário:  Transação de Cartão
     Dado que possuo um cartão "<numeroCartao>", "<senha>", <valor>
-    Quando eu realizo uma transação no valor de <valor>
-    Então a transação é processada
+    Então eu realizo uma transação
 
     Exemplos:
     | numeroCartao     | senha | valor |

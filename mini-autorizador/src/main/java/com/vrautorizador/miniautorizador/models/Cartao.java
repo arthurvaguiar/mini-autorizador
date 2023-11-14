@@ -1,5 +1,6 @@
 package com.vrautorizador.miniautorizador.models;
 
+import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -37,5 +38,12 @@ public class Cartao {
         this.numeroCartao = numeroCartao;
         this.senha = senha;
         this.valor = valor;
+    }
+
+    public void debitarSaldo(double value) throws SaldoInfucienteException {
+        if (value > this.valor) {
+            throw new SaldoInfucienteException("SALDO_INSUFICIENTE");
+        }
+        this.valor -= value;
     }
 }

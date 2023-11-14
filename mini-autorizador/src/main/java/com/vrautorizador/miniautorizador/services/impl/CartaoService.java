@@ -1,8 +1,9 @@
 package com.vrautorizador.miniautorizador.services.impl;
 
+import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
+import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
 import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
-import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.repositories.CartaoRepository;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
 import com.vrautorizador.miniautorizador.services.factory.CartaoFactory;
@@ -33,13 +34,13 @@ public class CartaoService implements ICartaoService {
     }
 
     @Override
-    public ResponseEntity<?> criarOuRetornarExistente(CartaoDto cartaoRequest) {
+    public ResponseEntity<Object> criarOuRetornarExistente(CartaoDto cartaoRequest) {
         Cartao novoCartao = factory.criarCartao(cartaoRequest.getNumeroCartao(), cartaoRequest.getSenha());
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(novoCartao));
     }
 
     @Override
-    public ResponseEntity<?> obterSaldoDoCartao(String numeroCartao) {
+    public ResponseEntity<Double> obterSaldoDoCartao(String numeroCartao) {
         return numeroCartao.isEmpty() ?
                 ResponseEntity.noContent().build() :
                 this.findByNumeroCartao(numeroCartao)
@@ -53,13 +54,18 @@ public class CartaoService implements ICartaoService {
     }
 
     @Override
-    public Cartao atualizarSaldo(Cartao cartao, double valor) {
-        cartao.setValor(cartao.getValor() - valor);
-        return cartao;
+    public void cartaoValido(String numeroCartao, String numeroCartao1) throws CartaoInvalidoException {
+        if (!numeroCartao.equals(numeroCartao1)) {
+            throw new CartaoInvalidoException("CARTAO_INVALIDO");
+        }
     }
 
-    public Optional<Cartao> mapperDtoToEntity(CartaoRequestDto cartaoRequest) {
-        return Optional.of(new Cartao(cartaoRequest.getNumeroCartao(), cartaoRequest.getSenha(), cartaoRequest.getValor()));
+    @Override
+    public void validarSenha(String senhaCartao, String senha) throws SenhaInvalidaException {
+        if (!senhaCartao.equals(senha)) {
+            throw new SenhaInvalidaException("SENHA_INVALIDA");
+        }
     }
+
 
 }

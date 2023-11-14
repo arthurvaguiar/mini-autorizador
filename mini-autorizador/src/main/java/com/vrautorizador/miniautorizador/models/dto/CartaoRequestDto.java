@@ -14,6 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartaoRequestDto {
+
     @CartaoValido
     private String numeroCartao;
     private String senha;

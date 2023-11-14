@@ -1,8 +1,9 @@
 package com.vrautorizador.miniautorizador.services;
 
+import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
+import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
 import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
-import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 
@@ -15,13 +16,14 @@ import java.util.Optional;
 @Validated
 public interface ICartaoService {
 
-    ResponseEntity<?> criarOuRetornarExistente(CartaoDto cartaoRequest);
+    ResponseEntity<Object> criarOuRetornarExistente(CartaoDto cartaoRequest);
 
-    ResponseEntity<?> obterSaldoDoCartao(String numeroCartao);
+    ResponseEntity<Double> obterSaldoDoCartao(String numeroCartao);
 
     Optional<Cartao> findByNumeroCartao(String numeroCartao);
 
-    Optional<Cartao> mapperDtoToEntity(CartaoRequestDto cartaoRequest);
 
-    Cartao atualizarSaldo(Cartao cartao, double valor);
+    void cartaoValido(String numeroCartao, String numeroCartao1) throws CartaoInvalidoException;
+
+    void validarSenha(String senha, String senha1) throws SenhaInvalidaException;
 }
