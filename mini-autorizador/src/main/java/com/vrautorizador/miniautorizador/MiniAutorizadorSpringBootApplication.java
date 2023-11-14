@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan({"com.vrautorizador.miniautorizador", "com.vrautorizador.miniautorizador.config"})
 public class MiniAutorizadorSpringBootApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MiniAutorizadorSpringBootApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MiniAutorizadorSpringBootApplication.class, args);
+    }
 
 }

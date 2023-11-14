@@ -57,10 +57,16 @@
             <version>2.0.1.Final</version>
         </dependency>
 
+        <!-- Springfox Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version> <!-- Use a versão mais recente -->
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
         </dependency>
 
 
@@ -97,6 +103,7 @@
                     <executable>true</executable>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

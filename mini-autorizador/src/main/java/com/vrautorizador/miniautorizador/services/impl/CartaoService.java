@@ -21,13 +21,11 @@ public class CartaoService implements ICartaoService {
     private final CartaoFactory factory;
     private final CartaoRepository repository;
 
-
     @Autowired
     public CartaoService(CartaoFactory factory, CartaoRepository repository) {
         this.factory = factory;
         this.repository = repository;
     }
-
 
     @Override
     public ResponseEntity<?> criarOuRetornarExistente(CartaoDto cartaoRequest) {
@@ -37,10 +35,11 @@ public class CartaoService implements ICartaoService {
 
     @Override
     public ResponseEntity<?> obterSaldoDoCartao(String numeroCartao) {
-        return Optional.ofNullable(this.findByNumeroCartao(numeroCartao).get())
-                .map(cartao -> {
-                    return ResponseEntity.status(HttpStatus.OK).body(cartao.getValor());
-                }).orElse(ResponseEntity.notFound().build());
+        return numeroCartao.isEmpty() ?
+                ResponseEntity.noContent().build() :
+                this.findByNumeroCartao(numeroCartao)
+                        .map(cartao -> ResponseEntity.status(HttpStatus.OK).body(cartao.getValor()))
+                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @Override
@@ -49,7 +48,8 @@ public class CartaoService implements ICartaoService {
     }
 
     public Optional<Cartao> mapperDtoToEntity(CartaoRequestDto cartaoRequest) {
-        return Optional.ofNullable(this.convertToEntity(cartaoRequest));
+        return Optional.ofNullable(cartaoRequest)
+                .map(this::convertToEntity);
     }
 
     private Cartao convertToEntity(CartaoRequestDto cartaoRequest) {

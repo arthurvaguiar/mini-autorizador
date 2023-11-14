@@ -1,40 +1,44 @@
 package com.vrautorizador.miniautorizador.controllers;
 
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
-import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/cartoes")
-@Api(value = "CartaoController", description = "Operações relacionadas ao cartão")
+@Tag(name = "Cartões", description = "Operações relacionadas a cartões")
 public class CartaoController {
 
     private final ICartaoService cartaoService;
 
     @Autowired
-    public CartaoController(ICartaoService cartaoService){
+    public CartaoController(ICartaoService cartaoService) {
         this.cartaoService = cartaoService;
     }
 
+    @Operation(summary = "Cria um novo cartão", description = "Criar um novo cartão", tags = {"Cartões"})
     @PostMapping
-    @ApiOperation(value = "Cria um novo cartão", response = ResponseEntity.class)
-    public ResponseEntity<?> criarNovoCartao(@RequestBody @Valid CartaoDto cartao){
+    public ResponseEntity<?> criarNovoCartao(@RequestBody @Valid CartaoDto cartao) {
         return cartaoService.criarOuRetornarExistente(cartao);
     }
 
+    @Operation(summary = "Obter saldo do cartão", description = "Obter saldo do cartão", tags = {"Cartões"})
     @GetMapping("/{numeroCartao}")
-    @ApiOperation(value = "Retorna o saldo do cartão", response = ResponseEntity.class)
-    public ResponseEntity<?> obterSaldoDoCartao(@PathVariable @Valid String numeroCartao){
+    public ResponseEntity<?> obterSaldoDoCartao(@PathVariable @NotNull @NotBlank String numeroCartao) {
         return cartaoService.obterSaldoDoCartao(numeroCartao);
     }
-
-
 
 }
