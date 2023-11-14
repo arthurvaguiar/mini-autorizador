@@ -2,14 +2,9 @@ package com.vrautorizador.miniautorizador.controllers;
 
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +12,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @RestController
 @RequestMapping("/cartoes")
 @Tag(name = "Cartões", description = "Operações relacionadas a cartões")
