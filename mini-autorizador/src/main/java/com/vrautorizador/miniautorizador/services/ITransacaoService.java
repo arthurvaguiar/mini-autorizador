@@ -1,5 +1,6 @@
 package com.vrautorizador.miniautorizador.services;
 
+import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import org.springframework.http.ResponseEntity;
 
@@ -9,5 +10,5 @@ import org.springframework.http.ResponseEntity;
  * @email arthurvaguiar@gmail.com
  */
 public interface ITransacaoService {
-    ResponseEntity<?> realizarTransacao(CartaoRequestDto cartaoRequest);
+    ResponseEntity<Cartao> realizarTransacao(CartaoRequestDto cartaoRequest);
 }

@@ -21,9 +21,10 @@ import java.util.Optional;
 @Service
 public class TransacaoService implements ITransacaoService {
 
-    private final TransacaoRepository repository;
+    private TransacaoRepository repository;
 
-    private final ICartaoService cartaoService;
+    private ICartaoService cartaoService;
+
 
     @Autowired
     public TransacaoService(TransacaoRepository repository, ICartaoService cartaoService) {
@@ -32,10 +33,10 @@ public class TransacaoService implements ITransacaoService {
     }
 
     @Override
-    public ResponseEntity<?> realizarTransacao(CartaoRequestDto cartaoDto) {
-        Optional<Cartao> cartaoRequest = cartaoService.mapperDtoToEntity(cartaoDto);
+    public ResponseEntity<Cartao> realizarTransacao(CartaoRequestDto cartaoDto) {
+        Optional<Cartao> cartaoRequest = this.mapper(cartaoDto);
 
-        return cartaoService.findByNumeroCartao(cartaoRequest.get().getNumeroCartao())
+        return (ResponseEntity<Cartao>) cartaoService.findByNumeroCartao(cartaoRequest.get().getNumeroCartao())
                 .map(cartao -> cartao.getSenha().equals(cartaoRequest.get().getSenha()) ?
                         (cartao.getValor() >= cartaoRequest.get().getValor() ?
                                 salvarEProcessarTransacao(cartao, cartaoRequest.get().getValor()) :
@@ -45,8 +46,8 @@ public class TransacaoService implements ITransacaoService {
     }
 
     private ResponseEntity<?> salvarEProcessarTransacao(Cartao cartao, double valor) {
-        cartao.setValor(cartao.getValor() - valor);
-        Transacao transacao = this.mapper(cartao);
+        Cartao cartaoAtualizado = cartaoService.atualizarSaldo(cartao, valor);
+        Transacao transacao = this.mapper(cartaoAtualizado);
         repository.save(transacao);
         return ResponseEntity.status(HttpStatus.CREATED).body("Transação realizada com sucesso");
     }
@@ -54,4 +55,10 @@ public class TransacaoService implements ITransacaoService {
     private Transacao mapper(Cartao cartao) {
         return new Transacao(cartao, cartao.getSenha(), cartao.getValor());
     }
+
+    private Optional<Cartao> mapper(CartaoRequestDto cartaoDto) {
+        return Optional.of(new Cartao(cartaoDto.getNumeroCartao(), cartaoDto.getSenha(), cartaoDto.getValor()));
+    }
+
+
 }

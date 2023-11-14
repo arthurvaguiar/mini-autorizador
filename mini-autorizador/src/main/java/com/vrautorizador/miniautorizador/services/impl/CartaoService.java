@@ -52,14 +52,14 @@ public class CartaoService implements ICartaoService {
         return Optional.ofNullable(repository.findByNumeroCartao(numeroCartao));
     }
 
+    @Override
+    public Cartao atualizarSaldo(Cartao cartao, double valor) {
+        cartao.setValor(cartao.getValor() - valor);
+        return cartao;
+    }
+
     public Optional<Cartao> mapperDtoToEntity(CartaoRequestDto cartaoRequest) {
-        return Optional.ofNullable(cartaoRequest)
-                .map(this::convertToEntity);
+        return Optional.of(new Cartao(cartaoRequest.getNumeroCartao(), cartaoRequest.getSenha(), cartaoRequest.getValor()));
     }
-
-    private Cartao convertToEntity(CartaoRequestDto cartaoRequest) {
-        return new Cartao(cartaoRequest.getNumeroCartao(), cartaoRequest.getSenha(), cartaoRequest.getValor());
-    }
-
 
 }

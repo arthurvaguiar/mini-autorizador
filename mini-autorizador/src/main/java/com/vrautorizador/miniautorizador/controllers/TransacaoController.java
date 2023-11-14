@@ -1,5 +1,6 @@
 package com.vrautorizador.miniautorizador.controllers;
 
+import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.services.ITransacaoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +30,7 @@ public class TransacaoController {
 
     @Operation(summary = "Realizar transação", description = "Realizar transação", tags = {"Transações"})
     @PostMapping
-    public ResponseEntity<?> realizarTransacao(@RequestBody CartaoRequestDto cartaoRequest) {
+    public ResponseEntity<Cartao> realizarTransacao(@RequestBody CartaoRequestDto cartaoRequest) {
         return transacaoService.realizarTransacao(cartaoRequest);
     }
 }

@@ -22,4 +22,6 @@ public interface ICartaoService {
     Optional<Cartao> findByNumeroCartao(String numeroCartao);
 
     Optional<Cartao> mapperDtoToEntity(CartaoRequestDto cartaoRequest);
+
+    Cartao atualizarSaldo(Cartao cartao, double valor);
 }
