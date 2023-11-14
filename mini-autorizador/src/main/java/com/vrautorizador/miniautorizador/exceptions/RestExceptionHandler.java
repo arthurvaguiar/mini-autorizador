@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @ControllerAdvice
 public class RestExceptionHandler {
 
@@ -36,7 +41,6 @@ public class RestExceptionHandler {
                 .collect(Collectors.joining(", "));
         return ResponseEntity.badRequest().body(new ErrorResponse("Houve um erro", errorMessage, HttpStatus.UNPROCESSABLE_ENTITY.value()));
     }
-
 
 
 }

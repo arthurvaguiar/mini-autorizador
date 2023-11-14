@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @Entity
 @Getter
 @Builder
@@ -15,7 +20,7 @@ import javax.persistence.*;
 public class Transacao {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

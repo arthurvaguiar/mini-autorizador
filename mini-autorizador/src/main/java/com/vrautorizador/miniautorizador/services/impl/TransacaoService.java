@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @Service
 public class TransacaoService implements ITransacaoService {
 

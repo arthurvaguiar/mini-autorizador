@@ -1,7 +1,9 @@
 package com.vrautorizador.miniautorizador.exceptions;
 
-import org.springframework.http.HttpStatus;
-
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 public class ErrorResponse {
     private String error;
     private String message;
@@ -22,5 +24,7 @@ public class ErrorResponse {
         return message;
     }
 
-    public int getStatus() {return status;}
+    public int getStatus() {
+        return status;
+    }
 }

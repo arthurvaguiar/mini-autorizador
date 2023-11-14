@@ -6,6 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @Getter
 @Builder
 @NoArgsConstructor

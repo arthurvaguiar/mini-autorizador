@@ -8,6 +8,10 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
 
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @Validated
 public interface ICartaoService {
 

@@ -4,6 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 @SpringBootApplication
 @ComponentScan({"com.vrautorizador.miniautorizador", "com.vrautorizador.miniautorizador.config"})
 public class MiniAutorizadorSpringBootApplication {

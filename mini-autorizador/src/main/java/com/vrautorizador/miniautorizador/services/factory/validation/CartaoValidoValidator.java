@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 public class CartaoValidoValidator implements ConstraintValidator<CartaoValido, String> {
 
     private final CartaoRepository repository;
