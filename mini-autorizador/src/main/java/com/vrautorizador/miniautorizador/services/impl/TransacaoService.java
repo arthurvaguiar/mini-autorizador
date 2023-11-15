@@ -10,6 +10,7 @@ import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.repositories.TransacaoRepository;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
 import com.vrautorizador.miniautorizador.services.ITransacaoService;
+import com.vrautorizador.miniautorizador.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,27 +34,22 @@ public class TransacaoService implements ITransacaoService {
         this.repository = repository;
     }
 
-
     @Override
     public void realizarTransacao(CartaoRequestDto cartaoDto) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException, CartaoInexistenteException {
-        Optional<Cartao> cartao = cartaoService.findByNumeroCartao(cartaoDto.getNumeroCartao());
+        Optional<Cartao> cartao = Optional.ofNullable(cartaoService.findByNumeroCartao(cartaoDto.getNumeroCartao())
+                .orElseThrow(() -> new CartaoInexistenteException("CARTAO_INEXISTENTE")));
+
+        cartao.filter(c -> c.isCardValid(c.getNumeroCartao(), cartaoDto.getNumeroCartao()))
+                .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO"));
+
         try {
-            cartao.orElseThrow(() -> new CartaoInexistenteException("CARTAO_INEXISTENTE"));
-
-            cartaoService.cartaoValido(cartao.get().getNumeroCartao(), cartaoDto.getNumeroCartao());
-
-            cartaoService.validarSenha(cartao.get().getSenha(), cartaoDto.getSenha());
-
+            SecurityUtils.isPasswordValid(cartao.get().getSenha(), cartaoDto.getSenha());
             salvarEProcessarTransacao(cartao.get(), cartaoDto.getValor());
-
         } catch (SenhaInvalidaException e) {
             throw new SenhaInvalidaException("SENHA_INVALIDA");
         } catch (SaldoInfucienteException e) {
             throw new SaldoInfucienteException("SALDO_INSUFICIENTE");
-        } catch (CartaoInvalidoException e) {
-            throw new CartaoInvalidoException("CARTAO_INVALIDO");
         }
-
     }
 
 

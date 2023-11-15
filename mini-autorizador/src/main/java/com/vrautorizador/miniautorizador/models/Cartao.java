@@ -46,4 +46,8 @@ public class Cartao {
         }
         this.valor -= value;
     }
+
+    public boolean isCardValid(String numeroCartao, String numeroCartaoRequest) {
+        return numeroCartao.equals(numeroCartaoRequest) ? true : false;
+    }
 }
