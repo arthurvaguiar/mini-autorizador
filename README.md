@@ -18,8 +18,8 @@ O código foi escrito com o objetivo de ser simples e de fácil entendimento. Fo
 ### Instalação
 
 ```bash
-git clone https://github.com/seuusuario/seuprojeto.git
-cd seuprojeto
+git clone https://github.com/arthurvaguiar/mini-autorizador
+cd mini-autorizador
 mvn install
 ```
 
