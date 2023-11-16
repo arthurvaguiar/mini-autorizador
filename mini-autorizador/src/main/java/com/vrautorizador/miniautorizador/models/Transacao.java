@@ -23,12 +23,12 @@ public class Transacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cartao_id")
-    private Cartao cartao;
-
+    @Column(name = "SENHA_CARTAO")
     private String senhaCartao;
     private double valor;
+    @ManyToOne
+    @JoinColumn(name = "CARTAO_ID")
+    private Cartao cartao;
 
 
     public Transacao(Cartao cartao, String senha, double valor) {

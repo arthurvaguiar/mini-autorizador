@@ -1,6 +1,5 @@
 package com.vrautorizador.miniautorizador.services.impl;
 
-import com.vrautorizador.miniautorizador.exceptions.CartaoInexistenteException;
 import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
 import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
 import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
@@ -35,9 +34,9 @@ public class TransacaoService implements ITransacaoService {
     }
 
     @Override
-    public void realizarTransacao(CartaoRequestDto cartaoDto) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException, CartaoInexistenteException {
+    public void realizarTransacao(CartaoRequestDto cartaoDto) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException {
         Optional<Cartao> cartao = Optional.ofNullable(cartaoService.findByNumeroCartao(cartaoDto.getNumeroCartao())
-                .orElseThrow(() -> new CartaoInexistenteException("CARTAO_INEXISTENTE")));
+                .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO")));
         try {
             cartao.filter(c -> c.isCardValid(c.getNumeroCartao(), cartaoDto.getNumeroCartao()))
                     .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO"));

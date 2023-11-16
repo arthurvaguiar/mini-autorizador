@@ -1,6 +1,5 @@
 package com.vrautorizador.miniautorizador.services;
 
-import com.vrautorizador.miniautorizador.exceptions.CartaoInexistenteException;
 import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
 import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
 import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
@@ -12,5 +11,5 @@ import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
  * @email arthurvaguiar@gmail.com
  */
 public interface ITransacaoService {
-    void realizarTransacao(CartaoRequestDto cartaoRequest) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException, CartaoInexistenteException;
+    void realizarTransacao(CartaoRequestDto cartaoRequest) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException;
 }

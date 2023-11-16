@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = CartaoValidoValidator.class)
 public @interface CartaoValido {
 
-    String message() default "Número do cartão inválido ou já existe na base de dados. Verifique o número do cartão.";
+    String message() default "Numero do cartao invalido ou ja existe na base de dados. Verifique o numero do cartao.";
 
     Class<?>[] groups() default {};
 

@@ -3,10 +3,7 @@ package com.vrautorizador.miniautorizador.models;
 import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 /**
@@ -25,6 +22,7 @@ public class Cartao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "NUMERO_CARTAO")
     private String numeroCartao;
     private String senha;
     private double valor = 500.00;
