@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 class CartaoTest {
 
 

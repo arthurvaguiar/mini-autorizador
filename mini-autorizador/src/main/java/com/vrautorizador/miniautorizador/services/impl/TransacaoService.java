@@ -38,11 +38,9 @@ public class TransacaoService implements ITransacaoService {
     public void realizarTransacao(CartaoRequestDto cartaoDto) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException, CartaoInexistenteException {
         Optional<Cartao> cartao = Optional.ofNullable(cartaoService.findByNumeroCartao(cartaoDto.getNumeroCartao())
                 .orElseThrow(() -> new CartaoInexistenteException("CARTAO_INEXISTENTE")));
-
-        cartao.filter(c -> c.isCardValid(c.getNumeroCartao(), cartaoDto.getNumeroCartao()))
-                .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO"));
-
         try {
+            cartao.filter(c -> c.isCardValid(c.getNumeroCartao(), cartaoDto.getNumeroCartao()))
+                    .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO"));
             SecurityUtils.isPasswordValid(cartao.get().getSenha(), cartaoDto.getSenha());
             salvarEProcessarTransacao(cartao.get(), cartaoDto.getValor());
         } catch (SenhaInvalidaException e) {
