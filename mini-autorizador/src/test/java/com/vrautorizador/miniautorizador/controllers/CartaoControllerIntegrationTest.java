@@ -3,8 +3,8 @@ package com.vrautorizador.miniautorizador.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
-import org.hamcrest.Matchers;
 import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -43,6 +43,7 @@ class CartaoControllerIntegrationTest {
     private final String PATH = "/cartoes";
 
 
+    @DisplayName("Dado que informo dados de um cartão que o numero do cartão, a obtenção do mesmo  é realiza com sucesso")
     @Test
     void testObterSaldoDoCartaoComSucesso() throws Exception {
 
@@ -54,6 +55,7 @@ class CartaoControllerIntegrationTest {
                 .andExpect(jsonPath("$", is(500.0)));
     }
 
+    @DisplayName("Dado que informo dados de um cartão que o numero do cartão é inválido, a obtenção do mesmo não é realiza e informa NOT_FOUND")
     @Test
     void testObterSaldoDoCartaoDeUmCartaoInvalido() throws Exception {
         var numeroCartao = "6549873025634501999";
@@ -63,9 +65,10 @@ class CartaoControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
+    @DisplayName("Dado que informo dados de um cartão , a criação do mesmo  é realiza com sucesso")
     @Test
     void testCriarNovoCartaoComSucesso() throws Exception {
-        cartaoDto = new CartaoDto("654987302563450125555", "1234");
+        cartaoDto = new CartaoDto("6549873025634501", "1234");
 
         String requestBody = objectMapper.writeValueAsString(cartaoDto);
 
@@ -78,17 +81,18 @@ class CartaoControllerIntegrationTest {
                 .andExpect(jsonPath("$.valor", is(500.0)));
     }
 
+    @DisplayName("Dado que informo dados de um cartão que já existe no banco, a criação do mesmo não é realiza e informa CARTAO_JA_EXISTE")
     @Test
     void testJaExisteCartaoCriadoNoBanco() throws Exception {
-        cartaoDto = new CartaoDto("654987302563450125555", "1234");
+        cartaoDto = new CartaoDto("6549873025634501", "1234");
         String requestBody = objectMapper.writeValueAsString(cartaoDto);
 
         mockMvc.perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", Matchers.containsString("Numero do cartao invalido ou ja existe na base de dados. Verifique o numero do cartao.")))
-                .andExpect(jsonPath("$.status", is(422)));
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.message", is("CARTAO_JA_EXISTE")))
+                .andExpect(jsonPath("$.status", is("UNPROCESSABLE_ENTITY")));
     }
 
 
@@ -100,8 +104,8 @@ class CartaoControllerIntegrationTest {
         mockMvc.perform(post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", Matchers.containsString("Numero do cartao invalido ou ja existe na base de dados. Verifique o numero do cartao.")))
-                .andExpect(jsonPath("$.status", is(422)));
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.message", is("CARTAO_INVALIDO")))
+                .andExpect(jsonPath("$.status", is("UNPROCESSABLE_ENTITY")));
     }
 }

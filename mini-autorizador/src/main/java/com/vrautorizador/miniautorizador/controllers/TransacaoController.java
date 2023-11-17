@@ -1,8 +1,5 @@
 package com.vrautorizador.miniautorizador.controllers;
 
-import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
-import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
-import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
 import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
 import com.vrautorizador.miniautorizador.services.ITransacaoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/transacoes")
 @Tag(name = "Transações", description = "Operações relacionadas a transação do cartão")
 public class TransacaoController {
-
     private final ITransacaoService transacaoService;
 
     @Autowired
@@ -33,17 +29,8 @@ public class TransacaoController {
 
     @Operation(summary = "Realizar transação", description = "Realizar transação", tags = {"Transações"})
     @PostMapping
-    public ResponseEntity<Object> realizarTransacao(@RequestBody CartaoRequestDto cartaoRequest) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException {
-        try {
-            this.transacaoService.realizarTransacao(cartaoRequest);
-            return ResponseEntity.status(HttpStatus.OK).body("Transação realizada com sucesso");
-
-        } catch (SenhaInvalidaException e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("SENHA_INVALIDA");
-        } catch (SaldoInfucienteException e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("SALDO_INSUFICIENTE");
-        } catch (CartaoInvalidoException e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("CARTAO_INVALIDO");
-        }
+    public ResponseEntity<Object> realizarTransacao(@RequestBody CartaoRequestDto cartaoRequest) {
+        this.transacaoService.realizarTransacao(cartaoRequest);
+        return ResponseEntity.status(HttpStatus.OK).body("Transação realizada com sucesso");
     }
 }

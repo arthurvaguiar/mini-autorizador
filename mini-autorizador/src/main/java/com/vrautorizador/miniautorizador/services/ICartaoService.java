@@ -2,7 +2,6 @@ package com.vrautorizador.miniautorizador.services;
 
 import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Optional;
@@ -14,9 +13,9 @@ import java.util.Optional;
 @Validated
 public interface ICartaoService {
 
-    ResponseEntity<Object> criarOuRetornarExistente(CartaoDto cartaoRequest);
+    Cartao criarOuRetornarExistente(CartaoDto cartaoRequest);
 
-    ResponseEntity<Double> obterSaldoDoCartao(String numeroCartao);
+    Double obterSaldoDoCartao(String numeroCartao);
 
     Optional<Cartao> findByNumeroCartao(String numeroCartao);
 }

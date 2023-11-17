@@ -1,15 +1,13 @@
 package com.vrautorizador.miniautorizador.services.impl;
 
+import com.vrautorizador.miniautorizador.exceptions.CartaoInexistenteException;
 import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
 import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoDto;
 import com.vrautorizador.miniautorizador.repositories.CartaoRepository;
 import com.vrautorizador.miniautorizador.services.ICartaoService;
-import com.vrautorizador.miniautorizador.services.factory.CartaoFactory;
 import com.vrautorizador.miniautorizador.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,28 +22,40 @@ import java.util.Optional;
 @Validated
 public class CartaoService implements ICartaoService {
 
-    private final CartaoFactory factory;
     private final CartaoRepository repository;
 
     @Autowired
-    public CartaoService(CartaoFactory factory, CartaoRepository repository) {
-        this.factory = factory;
+    public CartaoService(CartaoRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public ResponseEntity<Object> criarOuRetornarExistente(CartaoDto cartaoRequest) {
-        Cartao novoCartao = factory.criarCartao(cartaoRequest.getNumeroCartao(), SecurityUtils.hashPassword(cartaoRequest.getSenha()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(novoCartao));
+    public Cartao criarOuRetornarExistente(CartaoDto cartaoRequest) {
+        if (cartaoRequest.getNumeroCartao().isEmpty()) {
+            throw new CartaoInvalidoException("CARTAO_INVALIDO");
+        }
+
+        if (repository.existsByNumeroCartao(cartaoRequest.getNumeroCartao())) {
+            throw new CartaoInvalidoException("CARTAO_JA_EXISTE");
+        }
+        var novoCartao = new Cartao(cartaoRequest.getNumeroCartao(), SecurityUtils.hashPassword(cartaoRequest.getSenha()));
+        repository.save(novoCartao);
+        return novoCartao;
     }
 
     @Override
-    public ResponseEntity<Double> obterSaldoDoCartao(String numeroCartao) {
-        return numeroCartao.isEmpty() ?
-                ResponseEntity.noContent().build() :
-                this.findByNumeroCartao(numeroCartao)
-                        .map(cartao -> ResponseEntity.status(HttpStatus.OK).body(cartao.getValor()))
-                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Double obterSaldoDoCartao(String numeroCartao) {
+
+        if (!repository.existsByNumeroCartao(numeroCartao)) {
+            throw new CartaoInexistenteException("CARTAO_INVALIDO");
+        }
+
+        var cartao = this.findByNumeroCartao(numeroCartao);
+
+        if (cartao.isEmpty()) {
+            throw new CartaoInexistenteException("CARTAO_INVALID");
+        }
+        return cartao.get().getValor();
     }
 
     @Override

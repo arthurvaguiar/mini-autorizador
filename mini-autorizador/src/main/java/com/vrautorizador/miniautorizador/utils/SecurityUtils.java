@@ -7,6 +7,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * @author arthur valentim
+ * @email arthurvaguiar@gmail.com
+ */
 public abstract class SecurityUtils {
 
     public static String hashPassword(String password) {

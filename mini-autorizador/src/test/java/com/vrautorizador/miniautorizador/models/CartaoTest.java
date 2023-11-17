@@ -1,6 +1,8 @@
 package com.vrautorizador.miniautorizador.models;
 
+import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
 import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,6 +51,8 @@ class CartaoTest {
         Cartao cartao = new Cartao("1234567890123456", "senha");
 
         // Roda e verifica
-        assertFalse(cartao.isCardValid("1234567890123456", "6543210987654321"));
+        assertThrows(CartaoInvalidoException.class, () -> {
+            cartao.isCardValid("1234567890123456", "6543210987654321");
+        });
     }
 }

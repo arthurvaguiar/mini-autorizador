@@ -1,5 +1,6 @@
 package com.vrautorizador.miniautorizador.models;
 
+import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
 import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
 import lombok.*;
 
@@ -38,7 +39,7 @@ public class Cartao {
         this.valor = valor;
     }
 
-    public void debitarSaldo(double value) throws SaldoInfucienteException {
+    public void debitarSaldo(double value) {
         if (value > this.valor) {
             throw new SaldoInfucienteException("SALDO_INSUFICIENTE");
         }
@@ -46,6 +47,11 @@ public class Cartao {
     }
 
     public boolean isCardValid(String numeroCartao, String numeroCartaoRequest) {
-        return numeroCartao.equals(numeroCartaoRequest) ? true : false;
+        boolean valido = false;
+        if (!numeroCartao.equals(numeroCartaoRequest)) {
+            throw new CartaoInvalidoException("CARTAO_INVALID");
+        }
+        valido = true;
+        return valido;
     }
 }

@@ -1,10 +1,11 @@
 package com.vrautorizador.miniautorizador.models.dto;
 
-import com.vrautorizador.miniautorizador.services.factory.validation.CartaoValido;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
 
 
 /**
@@ -16,7 +17,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartaoDto {
-    @CartaoValido
+
+    @NotBlank
     private String numeroCartao;
+
+    @NotBlank
     private String senha;
 }

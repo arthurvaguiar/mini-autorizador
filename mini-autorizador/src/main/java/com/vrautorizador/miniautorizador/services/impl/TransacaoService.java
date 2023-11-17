@@ -1,8 +1,6 @@
 package com.vrautorizador.miniautorizador.services.impl;
 
 import com.vrautorizador.miniautorizador.exceptions.CartaoInvalidoException;
-import com.vrautorizador.miniautorizador.exceptions.SaldoInfucienteException;
-import com.vrautorizador.miniautorizador.exceptions.SenhaInvalidaException;
 import com.vrautorizador.miniautorizador.models.Cartao;
 import com.vrautorizador.miniautorizador.models.Transacao;
 import com.vrautorizador.miniautorizador.models.dto.CartaoRequestDto;
@@ -34,30 +32,21 @@ public class TransacaoService implements ITransacaoService {
     }
 
     @Override
-    public void realizarTransacao(CartaoRequestDto cartaoDto) throws SenhaInvalidaException, SaldoInfucienteException, CartaoInvalidoException {
+    public void realizarTransacao(CartaoRequestDto cartaoDto) {
         Optional<Cartao> cartao = Optional.ofNullable(cartaoService.findByNumeroCartao(cartaoDto.getNumeroCartao())
                 .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO")));
-        try {
-            cartao.filter(c -> c.isCardValid(c.getNumeroCartao(), cartaoDto.getNumeroCartao()))
-                    .orElseThrow(() -> new CartaoInvalidoException("CARTAO_INVALIDO"));
-            SecurityUtils.isPasswordValid(cartao.get().getSenha(), cartaoDto.getSenha());
-            salvarEProcessarTransacao(cartao.get(), cartaoDto.getValor());
-        } catch (SenhaInvalidaException e) {
-            throw new SenhaInvalidaException("SENHA_INVALIDA");
-        } catch (SaldoInfucienteException e) {
-            throw new SaldoInfucienteException("SALDO_INSUFICIENTE");
-        }
+
+        cartao.get().isCardValid(cartao.get().getNumeroCartao(), cartaoDto.getNumeroCartao());
+
+        SecurityUtils.isPasswordValid(cartao.get().getSenha(), cartaoDto.getSenha());
+
+        salvarEProcessarTransacao(cartao.get(), cartaoDto.getValor());
     }
 
-
-    private void salvarEProcessarTransacao(Cartao cartao, double valor) throws SaldoInfucienteException {
+    private void salvarEProcessarTransacao(Cartao cartao, double valor) {
         cartao.debitarSaldo(valor);
-        Transacao transacao = this.mapper(cartao, valor);
+        Transacao transacao = new Transacao(cartao, cartao.getSenha(), valor);
         repository.save(transacao);
-    }
-
-    private Transacao mapper(Cartao cartao, double valor) {
-        return new Transacao(cartao, cartao.getSenha(), valor);
     }
 
 
